@@ -78,5 +78,28 @@ function better_insertion_sort(array $a, $n)
 	return $a;
 }
 
+function merge_sort(array $a, $p, $r)
+{
+	$q = floor(($p + $r) / 2);
+	merge_sort($p, $q);
+	merge_sort($q, $r);
+	merge($a, $p, $q, $r);
+}
+
+function merge(array $a, $p, $q, $r)
+{
+	$i = $p;
+	$j = $q + 1;
+	$res = array();
+	while ($i <= $q && $j <= $r) {
+		if ($a[$i] <= $a[$j]) {
+			$res[] = $a[$i++];
+		} else {
+			$res[] = $a[$j++];
+		}
+	}
+	return $res;
+}
+
 $a = array(5,4,2,3,1,7,8);
 print_r(insertion_sort($a, count($a)));

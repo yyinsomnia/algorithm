@@ -78,28 +78,55 @@ function better_insertion_sort(array $a, $n)
 	return $a;
 }
 
-function merge_sort(array $a, $p, $r)
+function merge_sort(array &$a, $p, $r)
 {
+	if ($p >= $r) return ;
 	$q = floor(($p + $r) / 2);
-	merge_sort($p, $q);
-	merge_sort($q, $r);
-	merge($a, $p, $q, $r);
+	merge_sort($a, $p, $q);
+	merge_sort($a, $q + 1, $r);
+	another_merge($a, $p, $q, $r);
 }
 
-function merge(array $a, $p, $q, $r)
+function merge(array &$a, $p, $q, $r)
 {
+	$a_clone = $a;
 	$i = $p;
 	$j = $q + 1;
-	$res = array();
-	while ($i <= $q && $j <= $r) {
-		if ($a[$i] <= $a[$j]) {
-			$res[] = $a[$i++];
+	$count = $p;
+	while (true) {
+		if ($i == $q + 1 && $j == $r + 1) {
+			break;
+		} elseif ($i <= $q && $j <= $r) {
+			if ($a_clone[$i] <= $a_clone[$j]) {
+				$a[$count++] = $a_clone[$i++];
+			} else {
+				$a[$count++] = $a_clone[$j++];
+			}
 		} else {
-			$res[] = $a[$j++];
+			if ($i > $q)
+				$a[$count++] = $a_clone[$j++];
+			else 
+				$a[$count++] = $a_clone[$i++];
 		}
 	}
-	return $res;
+}
+
+function another_merge(array &$a, $p, $q, $r)
+{
+	$m = array_slice($a, $p, $q - $p + 1);
+	$n = array_slice($a, $q + 1, $r - $q);
+	$m[] = 2147483648; //just bigger than int
+	$n[] = 2147483648; //just bigger than int
+	$i = $j = 0;
+	for ($k = $p; $k <= $r; $k++) {
+		if ($m[$i] <= $n[$j]) {
+			$a[$k] = $m[$i++];
+		} else {
+			$a[$k] = $n[$j++];
+		}
+	}
 }
 
 $a = array(5,4,2,3,1,7,8);
-print_r(insertion_sort($a, count($a)));
+merge_sort($a, 0, count($a) - 1);
+echo implode(',', $a);

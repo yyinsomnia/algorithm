@@ -127,6 +127,34 @@ function another_merge(array &$a, $p, $q, $r)
 	}
 }
 
+function quick_sort(array &$a, $p, $r)
+{
+	if ($p >= $r) return ;
+	$q = floor(($p + $r) / 2);
+	$new_q = quick($a, $p, $q, $r);
+	var_dump($a);
+	quick_sort($a, $p, $new_q);
+	quick_sort($a, $new_q + 1, $r);
+}
+
+function quick(array &$a, $p, $q, $r) 
+{
+	$tmp = $a[$p];
+	$a[$p] = $a[$q];
+	$a[$q] = $tmp;
+	for ($i = $sentry = $p + 1; $i <= $r; $i++) {
+		if ($a[$i] <= $a[$p]) {
+			$tmp = $a[$sentry];
+			$a[$sentry++] = $a[$i];
+			$a[$i] = $tmp;
+		}
+	}
+	$tmp = $a[$p];
+	$a[$p] = $a[$sentry - 1];
+	$a[$sentry - 1] = $tmp;
+	return ($sentry-1);
+}
+
 $a = array(5,4,2,3,1,7,8);
-merge_sort($a, 0, count($a) - 1);
+quick_sort($a, 0, count($a) - 1);
 echo implode(',', $a);

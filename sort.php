@@ -37,7 +37,7 @@ function better_selection_sort(array $a, $n)
 			$a[$i] = $a[$smallest_index];
 			$a[$smallest_index] = $tmp;
 		}
-		$i++;	
+		$i++;
 	}
 	return $a;
 }
@@ -130,15 +130,15 @@ function another_merge(array &$a, $p, $q, $r)
 function quick_sort(array &$a, $p, $r)
 {
 	if ($p >= $r) return ;
-	$q = floor(($p + $r) / 2);
-	$new_q = quick($a, $p, $q, $r);
-	var_dump($a);
-	quick_sort($a, $p, $new_q);
+	$new_q = defense_partition($a, $p, $r);
+	//var_dump($a);
+	quick_sort($a, $p, $new_q -1);
 	quick_sort($a, $new_q + 1, $r);
 }
 
-function quick(array &$a, $p, $q, $r) 
+function partition(array &$a, $p, $r) 
 {
+	$q = floor(($p + $r) / 2);
 	$tmp = $a[$p];
 	$a[$p] = $a[$q];
 	$a[$q] = $tmp;
@@ -153,6 +153,71 @@ function quick(array &$a, $p, $q, $r)
 	$a[$p] = $a[$sentry - 1];
 	$a[$sentry - 1] = $tmp;
 	return ($sentry-1);
+}
+
+function better_partition(array &$a, $p, $r)
+{
+	for ($i = $sentry = $p; $i <= $r - 1; $i++) {
+		if ($a[$i] <= $a[$r]) {
+			if ($i !== $sentry) {
+				$tmp = $a[$sentry];
+				$a[$sentry] = $a[$i];
+				$a[$i] = $tmp;
+			}
+			$sentry++;
+		}
+	}
+	$tmp = $a[$r];
+	$a[$r] = $a[$sentry];
+	$a[$sentry] = $tmp;
+	return $sentry;
+}
+
+function defense_partition(array &$a, $p, $r)
+{
+	if ($r - $p >= 2) {
+		//rand 3 elements, and find the middle one, it'scandir(directory) disgusting
+		$list = range($p, $r);
+		$three_keys = array_rand($list, 3);
+		$three = array($list[$three_keys[0]], $list[$three_keys[1]], $list[$three_keys[2]]);
+		if ($a[$three[0]] <= $a[$three[1]]) {
+			if ($a[$three[1]]<= $a[$three[2]])
+				$pivot = $three[1];
+			else {
+				if ($a[$three[0]] <= $a[$three[2]])
+					$pivot = $three[2];
+				else 
+					$pivot = $three[0];
+			}
+		} else {
+			if ($a[$three[1]] >= $a[$three[2]])
+				$pivot = $three[1];
+			else {
+				if ($a[$three[0]] <= $a[$three[2]])
+					$pivot = $three[0];
+				else 
+					$pivot = $three[2];
+			}
+		}
+		$tmp = $a[$r];
+		$a[$r] = $a[$pivot];
+		$a[$pivot] = $tmp;
+	}
+
+	for ($i = $sentry = $p; $i <= $r - 1; $i++) {
+		if ($a[$i] <= $a[$r]) {
+			if ($i !== $sentry) {
+				$tmp = $a[$sentry];
+				$a[$sentry] = $a[$i];
+				$a[$i] = $tmp;
+			}
+			$sentry++;
+		}
+	}
+	$tmp = $a[$r];
+	$a[$r] = $a[$sentry];
+	$a[$sentry] = $tmp;
+	return $sentry;
 }
 
 $a = array(5,4,2,3,1,7,8);

@@ -51,6 +51,51 @@ function count_keys_less(array $equal, $m)
 	return $less;
 }
 
-$a = [1,2,1,2,2,2,1,1,0];
+function better_count_keys_less(array $equal, $m)
+{
+	$less = array_fill(0, $m, 0);
+	for ($j = 1; $j < $m; $j++) {
+		$less[$j] = $less[$j - 1] + $equal[$j - 1];
+	}
+	return $less;
+}
+
+function rearrange(array $a, $less, $n, $m)
+{
+	$b = [];
+	$cursor = 0;
+	for ($i = 0; $i < $m - 1; $i++) {
+		$count = $less[$i + 1] - $less[$i];
+		while ($count-- > 0) {
+			$b[$cursor++] = $i;
+		}
+	}
+	while ($cursor++ < $n) {
+		$b[$cursor] = $i;
+	}
+	return $b;
+}
+
+function another_rearrange(array $a, $less, $n, $m)
+{
+	$b = [];
+	for ($i = 0; $i < $n; $i++) {
+		$key = $a[$i];
+		$b[$less[$key]++] = $a[$i];
+	}
+	ksort($b);
+	return $b;
+}
+
+$a = [1,2,1,2,2,2,1,1,0,0,2];
 $r = count_keys_equal($a, count($a), 3);
+$r2 = count_keys_less($r, 3);
+$r3 = better_count_keys_less($r, 3);
+$b = another_rearrange($a, $r3, count($a), 3);
 echo implode(',', $r);
+echo '<br />';
+echo implode(',', $r2);
+echo '<br />';
+echo implode(',', $r3);
+echo '<br />';
+echo implode(',', $b);

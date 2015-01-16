@@ -78,16 +78,25 @@ function rearrange(array $a, $less, $n, $m)
 
 function another_rearrange(array $a, $less, $n, $m)
 {
-	$b = [];
+	$b = array_fill(0, $n, 0);
 	for ($i = 0; $i < $n; $i++) {
 		$key = $a[$i];
 		$b[$less[$key]++] = $a[$i];
 	}
-	ksort($b);
 	return $b;
 }
 
+function counting_sort(array $a, $n, $m)
+{
+	$equal = count_keys_equal($a, $n, $m);
+	$less = better_count_keys_less($equal, $m);
+	return another_rearrange($a, $less, $n, $m);
+
+}
+
 $a = [1,2,1,2,2,2,1,1,0,0,2];
+echo implode(',', counting_sort($a, count($a), 3));
+die();
 $r = count_keys_equal($a, count($a), 3);
 $r2 = count_keys_less($r, 3);
 $r3 = better_count_keys_less($r, 3);

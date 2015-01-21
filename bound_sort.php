@@ -76,11 +76,13 @@ function rearrange(array $a, $less, $n, $m)
 	return $b;
 }
 
-function another_rearrange(array $a, $less, $n, $m)
+function another_rearrange(array $a, $less, $n, $m, $bit_a = null)
 {
 	$b = array_fill(0, $n, 0);
 	for ($i = 0; $i < $n; $i++) {
-		$key = $a[$i];
+		if ($bit_a === null)
+			$bit_a = $a;
+		$key = $bit_a[$i];
 		$b[$less[$key]++] = $a[$i];
 	}
 	return $b;
@@ -94,8 +96,26 @@ function counting_sort(array $a, $n, $m)
 
 }
 
+/**
+ * how to find the whole string by one char?
+ */
+function radix_sort(array $a, $n, $m,$item_len)
+{
+	for ($i = $item_len - 1; $i >= 0; $i--) {
+		$bit_a = [];
+		foreach ($a as $item) {
+			$bit_a[] = $item[$i];
+		}
+		$equal = count_keys_equal($bit_a, $n, $m);
+		$less = better_count_keys_less($equal, $m);
+		$a = another_rearrange($a, $less, $n, $m, $bit_a);
+	}
+	return $a;
+}
+
 $a = [1,2,1,2,2,2,1,1,0,0,2];
-echo implode(',', counting_sort($a, count($a), 3));
+$a = ['100', '203', '301', '021', '989' ];
+echo implode(',', radix_sort($a, count($a), 10, 3));
 die();
 $r = count_keys_equal($a, count($a), 3);
 $r2 = count_keys_less($r, 3);

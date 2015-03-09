@@ -1,6 +1,6 @@
 <?php
 
-class Dijkstra
+class LeoDijkstra
 {
 	public $G;
 	public $s;
@@ -82,7 +82,7 @@ $weight_adjacency_list = [
 	],
 ];
 
-$di = new Dijkstra($weight_adjacency_list, 's');
+$di = new LeoDijkstra($weight_adjacency_list, 's');
 $di->topologicalSort();
 print_r(get_object_vars($di));
 

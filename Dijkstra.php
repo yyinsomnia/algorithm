@@ -59,6 +59,52 @@ class LeoDijkstra
 
 }
 
+class BookDijkstra
+{
+	public $G;
+	public $s;
+	public $vertexCount;
+	public $shortest;
+	public $pred;
+	public $edges;
+	public $Q;
+	public $decreaseKey;
+
+	public function __construct($G, $s)
+	{
+		$this->G = $G;
+		$this->s = $s;
+		$this->edges = array();
+		$this->vertexCount = 0;
+
+		foreach ($G as $key => $val) {
+			$this->shortest[$key] = 0x0FFFFFFF; //max int...just cheat myself..u know
+			$this->pred[$key] = null;
+			$this->vertexCount += count($val);
+		}
+		$this->shortest[$s] = 0;
+		$this->pred[$s] = null;
+	}
+
+	public function insertQ($v)
+	{
+
+	}
+
+	public function extractMinQ()
+	{
+
+	}
+
+	public function decreaseKeyQ($v)
+	{
+
+	}
+	
+
+
+}
+
 $weight_adjacency_list = [
 	's' => [
 		't' => 6,

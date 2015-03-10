@@ -59,14 +59,14 @@ class LeoDijkstra
 
 }
 
-class BookDijkstra
+class DijkstraArrayImplementation
 {
 	public $G;
 	public $s;
-	public $vertexCount;
+
 	public $shortest;
 	public $pred;
-	public $edges;
+
 	public $Q;
 	public $decreaseKey;
 
@@ -74,13 +74,12 @@ class BookDijkstra
 	{
 		$this->G = $G;
 		$this->s = $s;
-		$this->edges = array();
-		$this->vertexCount = 0;
+		$this->Q = array();
 
 		foreach ($G as $key => $val) {
 			$this->shortest[$key] = 0x0FFFFFFF; //max int...just cheat myself..u know
 			$this->pred[$key] = null;
-			$this->vertexCount += count($val);
+			$this->insertQ($key);
 		}
 		$this->shortest[$s] = 0;
 		$this->pred[$s] = null;
@@ -88,17 +87,58 @@ class BookDijkstra
 
 	public function insertQ($v)
 	{
-
+		$this->Q[] = $v;
 	}
 
 	public function extractMinQ()
 	{
-
+		$min_index = null;
+		$min_vertex = null;
+		$min_value = 0x0FFFFFFF;
+		foreach ($this->Q as $index => $v) {
+			if ($this->shortest[$v] < $min_value) {
+				$min_index = $index;
+				$min_vertex = $v;
+				$min_value = $this->shortest[$v];
+			}
+		}
+		unset($this->Q[$min_index]);
+		return $min_vertex;
 	}
 
 	public function decreaseKeyQ($v)
 	{
 
+	}
+
+	public function relax($u, $v)
+	{
+		if ($this->shortest[$u] + $this->weight($u, $v) < $this->shortest[$v]) {
+			$this->shortest[$v] = $this->shortest[$u] + $this->weight($u, $v);
+			$this->pred[$v] = $u;
+		}
+	}
+
+	public function weight($u, $v)
+	{
+		foreach ($this->G[$u] as $to => $weight) {
+			if ($v == $to)
+				return $weight;
+		}
+	}
+
+	public function topologicalSort()
+	{
+		$i = 0;
+		while (count($this->Q) > 0 && $i < 20) {
+			$u = $this->extractMinQ();
+			foreach ($this->G[$u] as $v => $weight) {
+				$this->relax($u, $v);
+				if ($this->pred[$v] == $u)
+					$this->decreaseKeyQ($v);
+			}
+			$i++;
+		}
 	}
 	
 
@@ -128,7 +168,7 @@ $weight_adjacency_list = [
 	],
 ];
 
-$di = new LeoDijkstra($weight_adjacency_list, 's');
+$di = new DijkstraArrayImplementation($weight_adjacency_list, 's');
 $di->topologicalSort();
 print_r(get_object_vars($di));
 

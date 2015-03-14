@@ -59,6 +59,9 @@ class LeoDijkstra
 
 }
 
+/**
+ * this implementation is more like the runner model
+ */
 class DijkstraArrayImplementation
 {
 	public $G;
@@ -127,7 +130,7 @@ class DijkstraArrayImplementation
 		}
 	}
 
-	public function topologicalSort()
+	public function simpleSort()
 	{
 		$i = 0;
 		while (count($this->Q) > 0 && $i < 20) {

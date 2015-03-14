@@ -132,20 +132,98 @@ class DijkstraArrayImplementation
 
 	public function simpleSort()
 	{
-		$i = 0;
-		while (count($this->Q) > 0 && $i < 20) {
+		while (count($this->Q) > 0) {
 			$u = $this->extractMinQ();
 			foreach ($this->G[$u] as $v => $weight) {
 				$this->relax($u, $v);
 				if ($this->pred[$v] == $u)
 					$this->decreaseKeyQ($v);
 			}
-			$i++;
 		}
 	}
 	
+}
 
+class DijkstraBinaryHeapImplementation
+{
+	public $G;
+	public $s;
 
+	public $shortest;
+	public $pred;
+
+	public $Q;
+	public $decreaseKey;
+
+	public function __construct($G, $s)
+	{
+		$this->G = $G;
+		$this->s = $s;
+		$this->Q = array();
+
+		foreach ($G as $key => $val) {
+			$this->shortest[$key] = 0x0FFFFFFF; //max int...just cheat myself..u know
+			$this->pred[$key] = null;
+			$this->insertQ($key);
+		}
+		$this->shortest[$s] = 0;
+		$this->pred[$s] = null;
+	}
+
+	public function insertQ($v)
+	{
+		$this->Q[] = $v;
+	}
+
+	public function extractMinQ()
+	{
+		$min_index = null;
+		$min_vertex = null;
+		$min_value = 0x0FFFFFFF;
+		foreach ($this->Q as $index => $v) {
+			if ($this->shortest[$v] < $min_value) {
+				$min_index = $index;
+				$min_vertex = $v;
+				$min_value = $this->shortest[$v];
+			}
+		}
+		unset($this->Q[$min_index]);
+		return $min_vertex;
+	}
+
+	public function decreaseKeyQ($v)
+	{
+
+	}
+
+	public function relax($u, $v)
+	{
+		if ($this->shortest[$u] + $this->weight($u, $v) < $this->shortest[$v]) {
+			$this->shortest[$v] = $this->shortest[$u] + $this->weight($u, $v);
+			$this->pred[$v] = $u;
+		}
+	}
+
+	public function weight($u, $v)
+	{
+		foreach ($this->G[$u] as $to => $weight) {
+			if ($v == $to)
+				return $weight;
+		}
+	}
+
+	public function binaryHeapSort()
+	{
+		while (count($this->Q) > 0) {
+			$u = $this->extractMinQ();
+			foreach ($this->G[$u] as $v => $weight) {
+				$this->relax($u, $v);
+				if ($this->pred[$v] == $u)
+					$this->decreaseKeyQ($v);
+			}
+		}
+	}
+	
 }
 
 $weight_adjacency_list = [
@@ -172,7 +250,7 @@ $weight_adjacency_list = [
 ];
 
 $di = new DijkstraArrayImplementation($weight_adjacency_list, 's');
-$di->topologicalSort();
+$di->simpleSort();
 print_r(get_object_vars($di));
 
 

@@ -154,6 +154,7 @@ class DijkstraBinaryHeapImplementation
 
 	public $Q;
 	public $decreaseKey;
+	public $arrayToassoc;
 
 	public function __construct($G, $s)
 	{
@@ -161,7 +162,9 @@ class DijkstraBinaryHeapImplementation
 		$this->s = $s;
 		$this->Q = array();
 
+		$i = 1;
 		foreach ($G as $key => $val) {
+			$this->arrayToassoc[$i] = $key;
 			$this->shortest[$key] = 0x0FFFFFFF; //max int...just cheat myself..u know
 			$this->pred[$key] = null;
 			$this->insertQ($key);
@@ -172,7 +175,14 @@ class DijkstraBinaryHeapImplementation
 
 	public function insertQ($v)
 	{
-		$this->Q[] = $v;
+		$i = count($this->Q) + 1;
+		$this->Q[$i] = $v;
+		$i_parent = floor($i / 2);
+		while ($i > 1 && $this->shortest[$this->arrayToassoc[$i]] < $this->shortest[$this->arrayToassoc[$i_parent]]) {
+			$tmp = $this->shortest[$this->arrayToassoc[$i]];
+			$this->shortest[$this->arrayToassoc[$i]] = $this->shortest[$this->arrayToassoc[$i_parent]];
+			$this->shortest[$this->arrayToassoc[$i_parent]] = $tmp;
+		}
 	}
 
 	public function extractMinQ()

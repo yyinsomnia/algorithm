@@ -154,7 +154,7 @@ class DijkstraBinaryHeapImplementation
 
 	public $Q;
 	public $decreaseKey;
-	public $arrayToassoc;
+	public $arrayToAssoc;
 
 	public function __construct($G, $s)
 	{
@@ -164,10 +164,11 @@ class DijkstraBinaryHeapImplementation
 
 		$i = 1;
 		foreach ($G as $key => $val) {
-			$this->arrayToassoc[$i] = $key;
+			$this->arrayToAssoc[$i] = $key;
 			$this->shortest[$key] = 0x0FFFFFFF; //max int...just cheat myself..u know
 			$this->pred[$key] = null;
 			$this->insertQ($key);
+			$i++;
 		}
 		$this->shortest[$s] = 0;
 		$this->pred[$s] = null;
@@ -177,28 +178,43 @@ class DijkstraBinaryHeapImplementation
 	{
 		$i = count($this->Q) + 1;
 		$this->Q[$i] = $v;
-		$i_parent = floor($i / 2);
-		while ($i > 1 && $this->shortest[$this->arrayToassoc[$i]] < $this->shortest[$this->arrayToassoc[$i_parent]]) {
+		$i_parent = intval($i / 2);
+		while ($i > 1 && $this->shortest[$this->arrayToAssoc[$i]] < $this->shortest[$this->arrayToAssoc[$i_parent]]) {
 			$tmp = $this->shortest[$this->arrayToassoc[$i]];
-			$this->shortest[$this->arrayToassoc[$i]] = $this->shortest[$this->arrayToassoc[$i_parent]];
-			$this->shortest[$this->arrayToassoc[$i_parent]] = $tmp;
+			$this->shortest[$this->arrayToAssoc[$i]] = $this->shortest[$this->arrayToAssoc[$i_parent]];
+			$this->shortest[$this->arrayToAssoc[$i_parent]] = $tmp;
+			$i = $i_parent;
+			$i_parent = intval($i / 2);
 		}
 	}
 
 	public function extractMinQ()
 	{
-		$min_index = null;
-		$min_vertex = null;
-		$min_value = 0x0FFFFFFF;
-		foreach ($this->Q as $index => $v) {
-			if ($this->shortest[$v] < $min_value) {
-				$min_index = $index;
-				$min_vertex = $v;
-				$min_value = $this->shortest[$v];
+		$i = 1;
+		$eax = $this->Q[$i];
+		$count = count($this->Q);
+		$this->Q[$i] = $this->Q[$count];
+		unset($this->Q[$count]);
+
+		$i_left_child = 2 * $i;
+		$i_right_child = 2 * $i + 1;
+		while ($i_right_child <= $count - 1) {
+			if ($this->shortest[$this->arrayToAssoc[$i]] > $this->shortest[$this->arrayToAssoc[$i_left_child]]) {
+				$i_change = $i_left_child;
+			} elseif ($this->shortest[$this->arrayToAssoc[$i]] > $this->shortest[$this->arrayToAssoc[$i_right_child]]) {
+				$i_change = $i_right_child;
+			} else {
+				break;
 			}
-		}
-		unset($this->Q[$min_index]);
-		return $min_vertex;
+			$tmp = $this->shortest[$this->arrayToassoc[$i]];
+			$this->shortest[$this->arrayToAssoc[$i]] = $this->shortest[$this->arrayToAssoc[$i_change]];
+			$this->shortest[$this->arrayToAssoc[$i_change]] = $tmp;
+			$i = $i_change;
+			$i_left_child = 2 * $i;
+			$i_right_child = 2 * $i + 1;
+		} 
+			
+		return $eax;
 	}
 
 	public function decreaseKeyQ($v)
@@ -259,8 +275,8 @@ $weight_adjacency_list = [
 	],
 ];
 
-$di = new DijkstraArrayImplementation($weight_adjacency_list, 's');
-$di->simpleSort();
+$di = new DijkstraBinaryHeapImplementation($weight_adjacency_list, 's');
+$di->binaryHeapSort();
 print_r(get_object_vars($di));
 
 

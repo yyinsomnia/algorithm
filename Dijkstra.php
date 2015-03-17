@@ -245,7 +245,7 @@ class DijkstraBinaryHeapImplementation
 			foreach ($this->G[$u] as $v => $weight) {
 				$this->relax($u, $v);
 				if ($this->pred[$v] == $u)
-					$this->decreaseKeyQ($v);
+					$this->decreaseKeyQ($v); //keep the heap property holds,
 			}
 		}
 	}

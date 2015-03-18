@@ -180,9 +180,9 @@ class DijkstraBinaryHeapImplementation
 		$this->Q[$i] = $v;
 		$i_parent = intval($i / 2);
 		while ($i > 1 && $this->shortest[$this->arrayToAssoc[$i]] < $this->shortest[$this->arrayToAssoc[$i_parent]]) {
-			$tmp = $this->shortest[$this->arrayToassoc[$i]];
-			$this->shortest[$this->arrayToAssoc[$i]] = $this->shortest[$this->arrayToAssoc[$i_parent]];
-			$this->shortest[$this->arrayToAssoc[$i_parent]] = $tmp;
+			$tmp = $this->Q[$i];
+			$this->Q[$i] = $this->Q[$i_parent];
+			$this->Q[$i_parent] = $tmp;
 			$i = $i_parent;
 			$i_parent = intval($i / 2);
 		}
@@ -206,9 +206,9 @@ class DijkstraBinaryHeapImplementation
 			} else {
 				break;
 			}
-			$tmp = $this->shortest[$this->arrayToassoc[$i]];
-			$this->shortest[$this->arrayToAssoc[$i]] = $this->shortest[$this->arrayToAssoc[$i_change]];
-			$this->shortest[$this->arrayToAssoc[$i_change]] = $tmp;
+			$tmp = $this->Q[$i];
+			$this->Q[$i] = $this->Q[$i_change];
+			$this->Q[$i_change] = $tmp;
 			$i = $i_change;
 			$i_left_child = 2 * $i;
 			$i_right_child = 2 * $i + 1;
@@ -219,6 +219,15 @@ class DijkstraBinaryHeapImplementation
 
 	public function decreaseKeyQ($v)
 	{
+		$i = array_keys($this->arrayToAssoc, $v)[0]; //the data struct is bad...
+		$i_parent = intval($i / 2);
+		while ($i > 1 && $this->shortest[$this->arrayToAssoc[$i]] < $this->shortest[$this->arrayToAssoc[$i_parent]]) {
+			$tmp = $this->Q[$i];
+			$this->Q[$i] = $this->Q[$i_parent];
+			$this->Q[$i_parent] = $tmp;
+			$i = $i_parent;
+			$i_parent = intval($i / 2);
+		}
 
 	}
 

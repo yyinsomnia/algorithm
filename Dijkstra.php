@@ -4,7 +4,7 @@ class LeoDijkstra
 {
 	public $G;
 	public $s;
-	public $vertexCount;
+	public $edgeCount;
 	public $shortest;
 	public $pred;
 	public $edges;
@@ -19,7 +19,7 @@ class LeoDijkstra
 		foreach ($G as $key => $val) {
 			$this->shortest[$key] = 0x0FFFFFFF; //max int...just cheat myself..u know
 			$this->pred[$key] = null;
-			$this->vertexCount += count($val);
+			$this->edgeCount += count($val);
 		}
 		$this->shortest[$s] = 0;
 		$this->pred[$s] = null;
@@ -45,7 +45,7 @@ class LeoDijkstra
 	{
 		$next = array();
 		$next[] = $this->s;
-		while (count($this->edges) < $this->vertexCount) {
+		while (count($this->edges) < $this->edgeCount) {
 			$s = array_pop($next);
 			foreach ($this->G[$s] as $vertex => $weight) {
 				if (in_array($s. '-' . $vertex, $this->edges))
@@ -53,6 +53,64 @@ class LeoDijkstra
 				$this->relax($s, $vertex);
 				$this->edges[] = $s. '-' . $vertex;
 				$next[] = $vertex;
+			}
+		}
+	}
+
+}
+
+class LeoBetterDijkstra
+{
+	public $G;
+	public $s;
+	public $vertexCount;
+	public $shortest;
+	public $pred;
+	public $vertexVisited;
+	
+	public function __construct($G, $s)
+	{
+		$this->G = $G;
+		$this->s = $s;
+		$this->vertexVisited = array();
+		$this->vertexCount = 0;
+
+		foreach ($G as $key => $val) {
+			$this->shortest[$key] = 0x0FFFFFFF; //max int...just cheat myself..u know
+			$this->pred[$key] = null;
+			$this->vertexCount += 1;
+		}
+		$this->shortest[$s] = 0;
+		$this->pred[$s] = null;
+	}
+
+	public function weight($u, $v)
+	{
+		foreach ($this->G[$u] as $to => $weight) {
+			if ($v == $to)
+				return $weight;
+		}
+	}
+
+	public function relax($u, $v)
+	{
+		if ($this->shortest[$u] + $this->weight($u, $v) < $this->shortest[$v]) {
+			$this->shortest[$v] = $this->shortest[$u] + $this->weight($u, $v);
+			$this->pred[$v] = $u;
+		}
+	}
+
+	public function sort()
+	{
+		$next = array();
+		$next[] = $this->s;
+		while (count($next)) {
+			print_r($this->vertexVisited);
+			$this->vertexVisited[] = $s = array_shift($next);
+			foreach ($this->G[$s] as $vertex => $weight) {
+				$this->relax($s, $vertex);
+				if (!in_array($vertex, $this->vertexVisited) && !in_array($vertex, $next))
+					$next[] = $vertex;
 			}
 		}
 	}
@@ -284,8 +342,8 @@ $weight_adjacency_list = [
 	],
 ];
 
-$di = new DijkstraBinaryHeapImplementation($weight_adjacency_list, 's');
-$di->binaryHeapSort();
+$di = new LeoBetterDijkstra($weight_adjacency_list, 's');
+$di->sort();
 print_r(get_object_vars($di));
 
 

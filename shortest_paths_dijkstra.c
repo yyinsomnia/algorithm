@@ -16,26 +16,36 @@
  unsigned int *dijkstra(unsigned int **weight, int n, int m, int s, int t) //what will it be if I start the queue from 1 but not 0?
  {
  	//init 
+ 	if (weight == NULL) {
+ 		return NULL;
+ 	}
  	p_weight = weight;
 
  	unsigned int shortest[n] = {0xFFFFFFFF};
  	shortest[s] = 0;
  	p_shortest = shortest;
 
-	int prev[n] = {-1};
+ 	int *prev = (int *)malloc(n * sizeof(int));
+ 	int i;
+	for (i = 0; i < n; i++) {
+		*(prev + i) = -1;
+	}
 	p_prev = prev;
  	
  	unsigned int priority_queue[n];
  	p_priority_queue = priority_queue;
  	unsigned int priority_queue_count = 0;
  	p_priority_queue_count = &priority_queue_count;
- 	int i = n;
+ 	i = n;
  	while (i--) {
  		insert_priority_queue(i);
  	}
 
  	int doudou;
  	while ((doudou = extract_priority_min()) != -1) {
+ 		if (doudou == t) {
+ 			return prev; //problem, the data will destruct when after func called , malloc and don't forget to free in func main()
+ 		}
  		int *row = *(p_weight + doudou);
  		for (i = 0; i < n; i++) {
  			if (*(row + i) > 0) {

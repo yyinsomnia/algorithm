@@ -1,4 +1,4 @@
-void Insertionsort(ElementType A[], int N)
+void InsertionSort(ElementType A[], int N)
 {
 	int j, P;
 	for (P = 1; P < N; P++)

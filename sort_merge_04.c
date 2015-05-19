@@ -21,18 +21,18 @@ void Merge(ElementType A[], ElementType TmpArray[], int Lpos, int Rpos, int Righ
 	{
 		if (A[Lpos] <= A[Rpos])
 		{
-			A[TmpPos++] = A[Lpos++];
+			TmpArray[TmpPos++] = A[Lpos++];
 		}
 		else 
 		{
-			A[TmpPos++] = A[Rpos++];
+			TmpArray[TmpPos++] = A[Rpos++];
 		}
 	}
 
 	while (Lpos <= LeftEnd)
-		A[TmpPos++] = A[Lpos++];
+		TmpArray[TmpPos++] = A[Lpos++];
 	while (Rpos <= RightEnd)
-		A[TmpPos++] = A[Rpos++];
+		TmpArray[TmpPos++] = A[Rpos++];
 
 	for (i = 0; i < NumElements; i++, RightEnd--)
 	{

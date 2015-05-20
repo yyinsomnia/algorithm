@@ -5,7 +5,7 @@ void Quicksort(ElementType A[], int N)
 	Qsort(A, 0, N - 1);
 }
 
-ElementType Median3( ElementType A[], int Left, int Right)
+ElementType Medium3( ElementType A[], int Left, int Right)
 {
 	int Center = (Left + Right) / 2;
 

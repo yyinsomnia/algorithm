@@ -1,6 +1,6 @@
 #define Cutoff ( 3 )
 
-ElementType Median3(ElementType A[], int Left, int Right)
+ElementType Medium3(ElementType A[], int Left, int Right)
 {
 	int Center = (Left + Right) / 2;
 

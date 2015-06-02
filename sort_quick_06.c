@@ -26,11 +26,10 @@ void Qsort(ElementType A[], int Left, int Right)
 		i = Left;
 		j = Right - 1;
 
-		while (A[++i] < Povit){}
-		while (A[++j] < Povit){}
-
 		for ( ; ; )
 		{
+			while (A[++i] < Povit){}
+			while (A[++j] < Povit){}
 			if (i < j)
 				Swap(&A[i], &A[j]);
 			else

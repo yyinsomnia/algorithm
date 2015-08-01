@@ -27,11 +27,11 @@ void Qsort(ElementType A[], int Left, int Right)
 		i = Left;
 		j = Right - 1;
 
-		while (A[++i] < Pivot){}
-		while (A[--j] > Pivot){}
-
 		for ( ; ; )
 		{
+			while (A[++i] < Pivot){}
+			while (A[--j] > Pivot){}
+
 			if (i < j)
 			{
 				Swap(&A[i], &A[j]);

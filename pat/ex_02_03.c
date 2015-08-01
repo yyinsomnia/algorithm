@@ -3,7 +3,7 @@
 #include <string.h>
 
 #define Error( Str )        FatalError( Str )
-#define FatalError( Str )   fprintf( stderr, "%s\n", Str ), exit( 1 )
+#define FatalError( Str )   fprintf( stderr, "%s\n", Str ), exit( 0 )
 
 #define EmptyTOS ( -1 )
 #define MinStackSize ( 5 )
@@ -152,18 +152,17 @@ TopAndPop( Stack S )
 float 
 calc(float a, float b, char operator)
 {
-    printf("%f %c %f\n", a, operator, b);
     switch (operator)
     {
             case '+': return (a + b);
             case '-': return (a - b);
             case '*': return (a * b);
             case '/': if (b == 0.0) {
-                Error("Error");
+                Error("ERROR");
             } else {
                 return (a / b);
             }
-            default: FatalError("Error");
+            default: FatalError("ERROR");
     }
 }
 
@@ -211,7 +210,7 @@ int main(void)
                 op = Top(S);
                 if (!op->isOperator)
                 {
-                    Error("Error");
+                    Error("ERROR");
                 }
                 
                 Pop(S);

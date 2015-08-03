@@ -31,26 +31,16 @@ int main(void)
 	for (i = 0; i < N; i++) {
 		scanf("%d", A + i);
 	}
-	if ((N & 1) == 0) {
-		i = 0;
-		for (p = 0; p < M; p++) {
-			if (i == N) {
-				break;
-			}
-			walkman = locate(p, M, N);
-			
-			while (walkman != p) {
-				swap(A + p, A + walkman);
-				i++;
-				walkman = locate(walkman, M, N);
-			}
+	i = 0;
+	for (p = 0; p < M; p++) {
+		if (i == N) {
+			break;
 		}
-	} else {
-		p = 0;
 		walkman = locate(p, M, N);
-			
+		
 		while (walkman != p) {
 			swap(A + p, A + walkman);
+			i++;
 			walkman = locate(walkman, M, N);
 		}
 	}

@@ -25,7 +25,11 @@ int main(void)
 {
 	int p, walkman, N, M, i;
 	scanf("%d %d", &N, &M);
-
+	
+	if (N <= M) {
+		M = M % N;
+	}
+	
 	int *A = malloc(sizeof(int) * N);
 	
 	for (i = 0; i < N; i++) {
@@ -33,7 +37,7 @@ int main(void)
 	}
 	i = 0;
 	for (p = 0; p < M; p++) {
-		if (i == N) {
+		if (i == N - 1) {
 			break;
 		}
 		walkman = locate(p, M, N);

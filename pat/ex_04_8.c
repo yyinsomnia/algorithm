@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define cutoff (500000)
+#define cutoff (5)
 typedef int ElementType;
 
 
 void InsertionSort(ElementType *A, int N)
 {
-	ElementType P, Tmp;
-	int i;
+	ElementType Tmp;
+	int i, P;
 	for (i = 1; i < N; i++) {
 		Tmp = A[i];
 		for (P = i; P >= 1 && A[P - 1] > Tmp; P = P - 1) {

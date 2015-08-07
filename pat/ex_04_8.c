@@ -88,6 +88,9 @@ int main(void)
 	int N, i;
 	ElementType *A, *T;
 	scanf("%d", &N);
+	if (N == 0) {
+		return 0;
+	}
 	A = malloc(sizeof(ElementType) * N);
 	//convenience for calculate the childs, the first one is T[1], childs are T[2*1] T[2*1+1]
 	T = malloc(sizeof(ElementType) * (N + 1)); 

@@ -159,27 +159,6 @@ void graph_visit_edge(int source, int sink, int **visited)
 	visited[source][sink] = 1;
 }
 
-int **visited_create(int N)
-{
-	int A[N][N];
-	int i, j;
-	for (i = 0; i < N; i++) {
-		for (j = 0; j < N; j++) {
-			A[i][j] = 0;
-		}
-	}
-}
-
-void **visited_destory(int **visited, int N)
-{
-	int i, j;
-	for (i = 0; i < N; i++) {
-		free(visited[i]);
-	}
-	free(visited);
-}
-
-
 
 int DFS(graph *g_ptr, int source, int *visited, int *component, int component_idx)
 {
@@ -227,12 +206,12 @@ int main(void)
 	}
 	
 	
-	int visited[N];	
+	int *visited = malloc(sizeof(int) * N);	
 	for (i = 0; i < N; i++) {
 		visited[i] = 0;
 	}
 	
-	int component[N];
+	int *component = malloc(sizeof(int) * N);
 	
 	for (source = 0; source < N; source++) {
 		component_idx = 0;

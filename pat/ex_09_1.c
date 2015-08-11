@@ -9,7 +9,7 @@ typedef int ElementType;
 
 #ifndef _HashQuard_H
 
-typedef unsigned int Index;
+typedef int Index;
 typedef Index Position;
 
 struct HashTbl;
@@ -91,13 +91,18 @@ HashTable InitializeTable(int TableSize)
 
 Position Find(ElementType  Key, HashTable H)
 {
-	Position CurrentPos;
+	Position CurrentPos, NextPos;
 	int CollisionNum;
 	
 	CollisionNum = 0;
 	CurrentPos = Hash(Key, H->TableSize);
 	while (H->TheCell[CurrentPos].Info != Empty && H->TheCell[CurrentPos].Element != Key) { //may infinite loop?
+		if (CollisionNum == H->TableSize) { // a little dirty, sorry I am lazy..if u can remember the FirstPos
+			CurrentPos = -1;
+			break;
+		}
 		CurrentPos += 2 * ++CollisionNum - 1;
+		if (NextPos )
 		if (CurrentPos >= H->TableSize) {
 			CurrentPos -= H->TableSize;
 		}		

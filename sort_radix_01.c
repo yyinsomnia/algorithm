@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define MAX 20
+#define MAX 20 //just bigger than n...
 #define BASE 10
 
 void radix_sort(int *a, int n)
@@ -30,6 +30,8 @@ void radix_sort(int *a, int n)
 		for (i = 0; i < n; i++) {
 			a[i] = b [i]
 		}
+		
+		exp *= BASE;
 	}
 }
 

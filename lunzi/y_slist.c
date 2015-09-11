@@ -1,5 +1,5 @@
 #include "y_common.h"
-#include "y_list.h"
+#include "y_slist.h"
 
 struct YSListNode
 {

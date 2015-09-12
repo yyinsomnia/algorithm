@@ -22,7 +22,7 @@ void radix_sort(int *a, int n)
 			bucket[i] += bucket[i-1]; 
 		}
 		
-		for (i = n; i >= 0; i--) { //it does matter , it makes the sort stable!!
+		for (i = n - 1; i >= 0; i--) { //it does matter , it makes the sort stable!!
 			b[--bucket[(a[i] / exp) % BASE]] = a[i]; //it does matter, must --bucket! 
 		}
 		

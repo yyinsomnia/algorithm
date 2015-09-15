@@ -128,11 +128,14 @@ YSList
 y_slist_reverse(YSList list)
 {
 	YSListPosition prev_position, position, next_position;
+	if (y_slist_is_empty(list)) {
+		return list;
+	}
 	prev_position = NULL;
 	position = y_slist_first(list);
 	next_position = position->next;
 	
-	while (position != NULL) {
+	while (next_position != NULL) {
 		position->next = prev_position;
 		prev_position = position;
 		position = next_position;

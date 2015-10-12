@@ -1,6 +1,6 @@
 void sort_sleep(int a[], int n)
 {
-	while (--n > 1 && !fork()); //fork()==0 is the child, so just master loop
+	while (--n > 1 && !fork()); //fork()==0 is the child, so just master loop, it seems wrong
 	sleep(n = atoi(a[n]));
 	printf("%d\n", n);
 	wait(0);
